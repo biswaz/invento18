@@ -4,11 +4,19 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
+from rest_framework import routers
+
+from invento18.events.views import EventDetailView
+from invento18.events.serializers import EventViewSet
+
+router = routers.DefaultRouter()
+router.register(r'api/v1/events', EventViewSet)
 
 from invento18.events.views import EventDetailView
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+    url(r'^', include(router.urls)),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
     # Django Admin, use {% url 'admin:index' %}
@@ -17,6 +25,10 @@ urlpatterns = [
     # User management
     url(r'^users/', include('invento18.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    url(r'^events/(?P<pk>\d+)/$', EventDetailView.as_view(), name='event-view')
+
 
     url(r'^events/(?P<pk>\d+)/$', EventDetailView.as_view(), name='event-view')
 
