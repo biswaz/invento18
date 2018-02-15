@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{{event.title}}<br>
+{{event.description}}<br>
+{{event.category}}<br>
+{{event.fee}}<br>
+{{event.coordinators|linebreaks}}<br>
+<img src="{{event.image_urls.all.0.url}}">
+{% endblock %}
